@@ -65,7 +65,7 @@ static BD_FILE_H *_bdrom_open_path(void *p, const char *rel_path)
     char *abs_path;
 
     abs_path = str_printf("%s%s", disc->disc_root, rel_path);
-    fp = file_open(abs_path, "rb");
+    fp = file_open(abs_path, "rbS");
     X_FREE(abs_path);
 
     return fp;
