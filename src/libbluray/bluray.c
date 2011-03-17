@@ -1656,6 +1656,25 @@ int64_t bd_seek_time(BLURAY *bd, uint64_t tick)
     return bd->s_pos;
 }
 
+int64_t bd_find_seek_point(BLURAY *bd, uint64_t tick)
+{
+  uint32_t clip_pkt, out_pkt;
+  NAV_CLIP *clip;
+
+  tick /= 2;
+
+  if (bd->title &&
+    tick < bd->title->duration) {
+
+      // Find the closest access unit to the requested position
+      clip = nav_time_search(bd->title, (uint32_t)tick, &clip_pkt, &out_pkt);
+
+      return (int64_t)out_pkt * 192;
+  }
+
+  return bd->s_pos;
+}
+
 uint64_t bd_tell_time(BLURAY *bd)
 {
     uint32_t clip_pkt = 0, out_pkt = 0, out_time = 0;

@@ -480,6 +480,16 @@ uint32_t bd_get_current_title(BLURAY *bd);
 
 /**
  *
+ * Find the byte position to specific time in 90Khz ticks
+ *
+ * @param bd    BLURAY ojbect
+ * @param tick  tick count
+ * @return byte position
+ */
+int64_t bd_find_seek_point(BLURAY *bd, uint64_t tick);
+
+/**
+ *
  *  Read from currently selected title file, decrypt if possible
  *
  * @param bd  BLURAY object
