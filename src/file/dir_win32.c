@@ -83,8 +83,8 @@ static BD_DIR_H *_dir_open_win32(const char* dirname)
 
     dir->internal = priv;
 
-    wchar_t wfilespec[MAX_PATH];
-    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filespec, -1, wfilespec, MAX_PATH))
+    wchar_t wfilespec[4096];
+    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filespec, -1, wfilespec, 4096))
         priv->handle = _wfindfirst(wfilespec, &priv->info);
     else
         priv->handle = -1;

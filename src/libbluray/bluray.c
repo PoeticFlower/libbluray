@@ -523,7 +523,7 @@ static int _open_m2ts(BLURAY *bd, BD_STREAM *st)
 
     f_name = str_printf("%s" DIR_SEP "BDMV" DIR_SEP "STREAM" DIR_SEP "%s",
                         bd->device_path, st->clip->name);
-    st->fp = file_open(f_name, "rb");
+    st->fp = file_open(f_name, "rbS");
     X_FREE(f_name);
 
     st->clip_size = 0;
@@ -1431,6 +1431,25 @@ int64_t bd_seek_time(BLURAY *bd, uint64_t tick)
     bd_mutex_unlock(&bd->mutex);
 
     return bd->s_pos;
+}
+
+int64_t bd_find_seek_point(BLURAY *bd, uint64_t tick)
+{
+  uint32_t clip_pkt, out_pkt;
+  NAV_CLIP *clip;
+
+  tick /= 2;
+
+  if (bd->title &&
+    tick < bd->title->duration) {
+
+      // Find the closest access unit to the requested position
+      clip = nav_time_search(bd->title, tick, &clip_pkt, &out_pkt);
+
+      return (int64_t)out_pkt * 192;
+  }
+
+  return bd->s_pos;
 }
 
 uint64_t bd_tell_time(BLURAY *bd)
