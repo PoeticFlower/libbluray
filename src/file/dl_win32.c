@@ -55,7 +55,7 @@ static const char *dlerror(char *buf, int buf_size)
 
 void *dl_dlopen(const char *path, const char *version)
 {
-    wchar_t wname[MAX_PATH];
+    wchar_t wname[MAX_PATH+1] = {0};
     char *name;
     void *result;
 
@@ -102,7 +102,7 @@ const char *dl_get_path(void)
     if (!initialized) {
         initialized = 1;
 
-        static char path[MAX_PATH];
+        static char path[MAX_PATH + 1];
         HMODULE hModule;
         wchar_t wpath[MAX_PATH];
 

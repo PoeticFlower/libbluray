@@ -95,10 +95,13 @@ static BD_FILE_H *_file_open(const char* filename, const char *mode)
 {
     FILE *fp = NULL;
 
-    wchar_t wfilename[MAX_PATH], wmode[8];
-    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, MAX_PATH) &&
+    wchar_t wfilename[4096 + 1] = {0}, wmode[8 + 1] = {0};
+    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, 4096) &&
         MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, mode, -1, wmode, 8) &&
         (fp = _wfopen(wfilename, wmode))) {
+
+        // Set file buffer
+        setvbuf(fp, NULL, _IOFBF, 6144 * 10);
 
         BD_FILE_H *file = malloc(sizeof(BD_FILE_H));
         file->internal = fp;

@@ -37,7 +37,7 @@
 
 int win32_mkdir(const char *dir)
 {
-    wchar_t wdir[MAX_PATH];
+    wchar_t wdir[MAX_PATH+1] = {0};
 
     MultiByteToWideChar(CP_UTF8, 0, dir, -1, wdir, MAX_PATH);
     return _wmkdir(wdir);
