@@ -530,7 +530,7 @@ static int _open_m2ts(BLURAY *bd, BD_STREAM *st)
     st->clip_pos = (uint64_t)st->clip->start_pkt * 192;
     st->clip_block_pos = (st->clip_pos / 6144) * 6144;
 
-    if ((st->fp = file_open(f_name, "rb"))) {
+    if ((st->fp = file_open(f_name, "rbS"))) {
         file_seek(st->fp, 0, SEEK_END);
         if ((st->clip_size = file_tell(st->fp))) {
             file_seek(st->fp, st->clip_block_pos, SEEK_SET);
@@ -1595,6 +1595,25 @@ int64_t bd_seek_time(BLURAY *bd, uint64_t tick)
     bd_mutex_unlock(&bd->mutex);
 
     return bd->s_pos;
+}
+
+int64_t bd_find_seek_point(BLURAY *bd, uint64_t tick)
+{
+  uint32_t clip_pkt, out_pkt;
+  NAV_CLIP *clip;
+
+  tick /= 2;
+
+  if (bd->title &&
+    tick < bd->title->duration) {
+
+      // Find the closest access unit to the requested position
+      clip = nav_time_search(bd->title, tick, &clip_pkt, &out_pkt);
+
+      return (int64_t)out_pkt * 192;
+  }
+
+  return bd->s_pos;
 }
 
 uint64_t bd_tell_time(BLURAY *bd)
