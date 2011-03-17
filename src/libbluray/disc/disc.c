@@ -72,7 +72,7 @@ static BD_FILE_H *_bdrom_open_path(void *p, const char *rel_path)
         return NULL;
     }
 
-    fp = file_open(abs_path, "rb");
+    fp = file_open(abs_path, "rbS");
     X_FREE(abs_path);
 
     return fp;

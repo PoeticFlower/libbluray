@@ -107,9 +107,9 @@ static BD_FILE_H *_file_open(const char* filename, const char *mode)
 {
     BD_FILE_H *file;
     FILE *fp;
-    wchar_t wfilename[MAX_PATH], wmode[8];
+    wchar_t wfilename[4096 + 1] = {0}, wmode[8] = {0};
 
-    if (!MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, MAX_PATH) ||
+    if (!MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, 4096) ||
         !MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, mode, -1, wmode, 8)) {
 
         BD_DEBUG(DBG_FILE, "Error opening file %s\n", filename);
@@ -121,6 +121,9 @@ static BD_FILE_H *_file_open(const char* filename, const char *mode)
         BD_DEBUG(DBG_FILE, "Error opening file %s\n", filename);
         return NULL;
     }
+
+    // Set file buffer
+    setvbuf(fp, NULL, _IOFBF, 6144 * 10);
 
     file = calloc(1, sizeof(BD_FILE_H));
     if (!file) {

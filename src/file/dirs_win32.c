@@ -36,7 +36,7 @@
 
 char *win32_get_font_dir(const char *font_file)
 {
-    wchar_t wdir[MAX_PATH];
+    wchar_t wdir[MAX_PATH+1] = {0};
     if (S_OK != SHGetFolderPathW(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, wdir)) {
         int lenght = GetWindowsDirectoryW(wdir, MAX_PATH);
         if (lenght == 0 || lenght > (MAX_PATH - 8)) {
@@ -67,7 +67,7 @@ char *file_get_config_home(void)
 
 char *file_get_data_home(void)
 {
-    wchar_t wdir[MAX_PATH];
+    wchar_t wdir[MAX_PATH+1] = {0};
 
     /* Get the "Application Data" folder for the user */
     if (S_OK == SHGetFolderPathW(NULL, CSIDL_APPDATA | CSIDL_FLAG_CREATE,
@@ -92,7 +92,7 @@ char *file_get_cache_home(void)
 const char *file_get_config_system(const char *dir)
 {
     static char *appdir = NULL;
-    wchar_t wdir[MAX_PATH];
+    wchar_t wdir[MAX_PATH+1] = {0};
 
     if (!dir) {
         // first call

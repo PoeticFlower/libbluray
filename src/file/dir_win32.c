@@ -76,7 +76,7 @@ static dir_data_t *_open_impl(const char *dirname)
 {
     dir_data_t *priv;
     char *filespec;
-    wchar_t wfilespec[MAX_PATH];
+    wchar_t wfilespec[4096 + 1];
     int result;
 
     filespec = str_printf("%s" DIR_SEP "*", dirname);
@@ -84,7 +84,7 @@ static dir_data_t *_open_impl(const char *dirname)
         return NULL;
     }
 
-    result = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filespec, -1, wfilespec, MAX_PATH);
+    result = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filespec, -1, wfilespec, 4096);
     X_FREE(filespec);
     if (!result) {
         return NULL;
