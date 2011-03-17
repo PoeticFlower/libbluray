@@ -98,13 +98,15 @@ static BD_FILE_H *file_open_linux(const char* filename, const char *mode)
     file->eof = file_eof_linux;
 
 #ifdef WIN32
-    wchar_t wfilename[MAX_PATH], wmode[8];
-    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, MAX_PATH) &&
+    wchar_t wfilename[4096], wmode[8];
+    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, 4096) &&
         MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, mode, -1, wmode, 8) &&
         (fp = _wfopen(wfilename, wmode))) {
 #else
     if ((fp = fopen(filename, mode))) {
 #endif
+        // Set file buffer
+        setvbuf(fp, NULL, _IOFBF, 1 << 17);
         file->internal = fp;
 
         return file;
