@@ -453,12 +453,12 @@ static int _read_block(BLURAY *bd, BD_STREAM *st, uint8_t *buf)
                 }
 
                 /* Check TP_extra_header Copy_permission_indicator. If != 0, unit is still encrypted. */
-                if (buf[0] & 0xc0) {
+                /*if (buf[0] & 0xc0) {
                     BD_DEBUG(DBG_BLURAY | DBG_CRIT,
                           "TP header copy permission indicator != 0, unit is still encrypted? (%p)\n", bd);
                     _queue_event(bd, BD_EVENT_ENCRYPTED, 0);
                     return -1;
-                }
+                } */
 
                 BD_DEBUG(DBG_STREAM, "Read unit OK! (%p)\n", bd);
 
