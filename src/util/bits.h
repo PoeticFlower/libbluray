@@ -25,7 +25,12 @@
 
 #include "file/file.h"
 
+#ifdef _WIN32
+typedef long off_t;
+typedef long ssize_t;
+#else
 #include <unistd.h>
+#endif
 #include <stdio.h>
 
 /**
