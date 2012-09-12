@@ -52,9 +52,8 @@ struct textst_render {
 
   unsigned       font_count;
   FT_Face       *face;
-
-  bd_char_code_e char_code;
 #endif
+  bd_char_code_e char_code;
 };
 
 /*
@@ -177,13 +176,12 @@ static unsigned _utf8_char_get(const uint8_t *s, int char_size)
 /*
  * rendering
  */
-
+#ifdef HAVE_FT2
 static int _draw_string(FT_Face face, const uint8_t *string, int length,
                         TEXTST_BITMAP *bmp, int x, int y,
                         BD_TEXTST_REGION_STYLE *style,
                         int *baseline_pos)
 {
-#ifdef HAVE_FT2
     uint8_t  color = style->font_color;
     unsigned char_code;
     int      ii, jj, kk;
@@ -237,7 +235,6 @@ static int _draw_string(FT_Face face, const uint8_t *string, int length,
             x += face->glyph->metrics.horiAdvance >> 6;
         }
     }
-#endif /* HAVE_FT2 */
 
     return x;
 }
@@ -317,12 +314,14 @@ static int _render_line(TEXTST_RENDER *p, TEXTST_BITMAP *bmp,
 
     return xpos;
 }
+#endif
 
 int textst_render(TEXTST_RENDER *p,
                   TEXTST_BITMAP *bmp,
                   const BD_TEXTST_REGION_STYLE *base_style,
                   const BD_TEXTST_DIALOG_REGION *region)
 {
+#ifdef HAVE_FT2
     /* fonts loaded ? */
     if (p->font_count < 1) {
         TEXTST_ERROR("textst_render: no fonts loaded\n");
@@ -405,6 +404,9 @@ int textst_render(TEXTST_RENDER *p,
 
         ypos += s.line_space - baseline;
     }
+#else
+    TEXTST_ERROR("TextST font support not compiled in\n");
+#endif
 
     return 0;
 }
