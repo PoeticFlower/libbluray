@@ -81,9 +81,9 @@ void *dl_dlopen(const char *path, const char *version)
     if (GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")),
                        "SetDefaultDllDirectories") != NULL)
 #endif
-        flags = LOAD_LIBRARY_SEARCH_APPLICATION_DIR |
+        flags = 0xB00; /*LOAD_LIBRARY_SEARCH_APPLICATION_DIR |
                 LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR |
-                LOAD_LIBRARY_SEARCH_SYSTEM32;
+                LOAD_LIBRARY_SEARCH_SYSTEM32;*/
 
     result = LoadLibraryExW(wname, NULL, flags);
 
