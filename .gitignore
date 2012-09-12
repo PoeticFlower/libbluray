@@ -5,6 +5,7 @@
 *.pc
 *.tar.*
 Makefile.in
+*.user
 Makefile
 aclocal.m4
 m4/libtool.m4
@@ -22,7 +23,6 @@ configure
 libtool
 .deps
 .libs
-src/libbluray/bluray-version.h
 src/examples/bdsplice
 src/examples/clpi_dump
 src/examples/index_dump
