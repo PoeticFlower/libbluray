@@ -261,10 +261,10 @@ void bd_psr_save_state(BD_REGISTERS *p)
 
     if (p->num_cb) {
         BD_PSR_EVENT ev = {
-            .ev_type = BD_PSR_SAVE,
-            .psr_idx = -1,
-            .old_val = 0,
-            .new_val = 0,
+            /*.ev_type =*/ BD_PSR_SAVE,
+            /*.psr_idx =*/ -1,
+            /*.old_val =*/ 0,
+            /*.new_val =*/ 0,
         };
 
         unsigned j;

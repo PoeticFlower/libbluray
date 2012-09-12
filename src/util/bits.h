@@ -25,7 +25,12 @@
 
 #include "file/file.h"
 
+#ifdef _WIN32
+typedef long off_t;
+typedef long ssize_t;
+#else
 #include <unistd.h>
+#endif
 #include <stdio.h>
 
 /**
@@ -54,7 +59,7 @@ typedef struct {
 
 static inline void bb_init( BITBUFFER *bb, void *p_data, size_t i_data )
 {
-    bb->p_start = p_data;
+    bb->p_start = (uint8_t *)p_data;
     bb->p       = bb->p_start;
     bb->p_end   = bb->p_start + i_data;
     bb->i_left  = 8;

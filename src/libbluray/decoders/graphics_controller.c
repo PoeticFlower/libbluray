@@ -370,11 +370,13 @@ static void _open_osd(GRAPHICS_CONTROLLER *gc, int plane,
 {
     if (gc->overlay_proc) {
         const BD_OVERLAY ov = {
-            .cmd     = BD_OVERLAY_INIT,
-            .pts     = -1,
-            .plane   = plane,
-            .w       = width,
-            .h       = height,
+            /*.pts     =*/ -1,
+            /*.plane   =*/ plane,
+            /*.cmd     =*/ BD_OVERLAY_INIT,
+            /*.x       =*/ 0,
+            /*.y       =*/ 0,
+            /*.w       =*/ width,
+            /*.h       =*/ height,
         };
 
         gc->overlay_proc(gc->overlay_proc_handle, &ov);
@@ -391,9 +393,9 @@ static void _close_osd(GRAPHICS_CONTROLLER *gc, int plane)
 {
     if (gc->overlay_proc) {
         const BD_OVERLAY ov = {
-            .cmd     = BD_OVERLAY_CLOSE,
-            .pts     = -1,
-            .plane   = plane,
+            /*.pts     =*/ -1,
+            /*.plane   =*/ plane,
+            /*.cmd     =*/ BD_OVERLAY_CLOSE,
         };
 
         gc->overlay_proc(gc->overlay_proc_handle, &ov);
@@ -412,9 +414,9 @@ static void _flush_osd(GRAPHICS_CONTROLLER *gc, int plane, int64_t pts)
 {
     if (gc->overlay_proc) {
         const BD_OVERLAY ov = {
-            .cmd     = BD_OVERLAY_FLUSH,
-            .pts     = pts,
-            .plane   = plane,
+            /*.pts     =*/ pts,
+            /*.plane   =*/ plane,
+            /*.cmd     =*/ BD_OVERLAY_FLUSH,
         };
 
         gc->overlay_proc(gc->overlay_proc_handle, &ov);
@@ -427,13 +429,13 @@ static void _clear_osd_area(GRAPHICS_CONTROLLER *gc, int plane,
     if (gc->overlay_proc) {
         /* wipe area */
         const BD_OVERLAY ov = {
-            .cmd     = BD_OVERLAY_WIPE,
-            .pts     = -1,
-            .plane   = plane,
-            .x       = x,
-            .y       = y,
-            .w       = w,
-            .h       = h,
+            /*.pts     =*/ -1,
+            /*.plane   =*/ plane,
+            /*.cmd     =*/ BD_OVERLAY_WIPE,
+            /*.x       =*/ x,
+            /*.y       =*/ y,
+            /*.w       =*/ w,
+            /*.h       =*/ h,
         };
 
         gc->overlay_proc(gc->overlay_proc_handle, &ov);
@@ -445,9 +447,9 @@ static void _clear_osd(GRAPHICS_CONTROLLER *gc, int plane)
     if (gc->overlay_proc) {
         /* clear plane */
         const BD_OVERLAY ov = {
-            .cmd     = BD_OVERLAY_CLEAR,
-            .pts     = -1,
-            .plane   = plane,
+            /*.pts     =*/ -1,
+            /*.plane   =*/ plane,
+            /*.cmd     =*/ BD_OVERLAY_CLEAR,
         };
 
         gc->overlay_proc(gc->overlay_proc_handle, &ov);
@@ -481,15 +483,15 @@ static void _render_object(GRAPHICS_CONTROLLER *gc,
 {
     if (gc->overlay_proc) {
         BD_OVERLAY ov = {
-            .cmd     = BD_OVERLAY_DRAW,
-            .pts     = pts,
-            .plane   = plane,
-            .x       = x,
-            .y       = y,
-            .w       = object->width,
-            .h       = object->height,
-            .palette = palette->entry,
-            .img     = object->img,
+            /*.pts     =*/ pts,
+            /*.plane   =*/ plane,
+            /*.cmd     =*/ BD_OVERLAY_DRAW,
+            /*.x       =*/ x,
+            /*.y       =*/ y,
+            /*.w       =*/ object->width,
+            /*.h       =*/ object->height,
+            /*.palette =*/ palette->entry,
+            /*.img     =*/ object->img,
         };
 
         gc->overlay_proc(gc->overlay_proc_handle, &ov);
@@ -1206,7 +1208,7 @@ int gc_run(GRAPHICS_CONTROLLER *gc, gc_ctrl_e ctrl, uint32_t param, GC_NAV_CMDS 
 
         case GC_CTRL_VK_KEY:
             if (param != BD_VK_POPUP) {
-                result = _user_input(gc, param, cmds);
+                result = _user_input(gc, (bd_vk_key_e)param, cmds);
                 break;
             }
             param = !gc->popup_visible;

@@ -2133,10 +2133,10 @@ static void _queue_initial_psr_events(BLURAY *bd)
 
     for (ii = 0; ii < sizeof(psrs) / sizeof(psrs[0]); ii++) {
         BD_PSR_EVENT ev = {
-            .ev_type = BD_PSR_CHANGE,
-            .psr_idx = psrs[ii],
-            .old_val = 0,
-            .new_val = bd_psr_read(bd->regs, psrs[ii]),
+            /*.ev_type =*/ BD_PSR_CHANGE,
+            /*.psr_idx =*/ psrs[ii],
+            /*.old_val =*/ 0,
+            /*.new_val =*/ bd_psr_read(bd->regs, psrs[ii]),
         };
 
         _process_psr_change_event(bd, &ev);

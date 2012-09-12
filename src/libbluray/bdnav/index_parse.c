@@ -29,7 +29,7 @@
 
 static int _parse_hdmv_obj(BITSTREAM *bs, INDX_HDMV_OBJ *hdmv)
 {
-    hdmv->playback_type = bs_read(bs, 2);
+    hdmv->playback_type = (indx_hdmv_playback_type)bs_read(bs, 2);
     bs_skip(bs, 14);
     hdmv->id_ref = bs_read(bs, 16);
     bs_skip(bs, 32);
@@ -39,7 +39,7 @@ static int _parse_hdmv_obj(BITSTREAM *bs, INDX_HDMV_OBJ *hdmv)
 
 static int _parse_bdj_obj(BITSTREAM *bs, INDX_BDJ_OBJ *bdj)
 {
-    bdj->playback_type = bs_read(bs, 2);
+    bdj->playback_type = (indx_bdj_playback_type)bs_read(bs, 2);
     bs_skip(bs, 14);
     bs_read_bytes(bs, (uint8_t*)bdj->name, 5);
     bdj->name[5] = 0;
@@ -50,7 +50,7 @@ static int _parse_bdj_obj(BITSTREAM *bs, INDX_BDJ_OBJ *bdj)
 
 static int _parse_playback_obj(BITSTREAM *bs, INDX_PLAY_ITEM *obj)
 {
-    obj->object_type = bs_read(bs, 2);
+    obj->object_type = (indx_object_type)bs_read(bs, 2);
     bs_skip(bs, 30);
 
     if (obj->object_type == 1) {
@@ -84,7 +84,7 @@ static int _parse_index(BITSTREAM *bs, INDX_ROOT *index)
 
     for (i = 0; i < index->num_titles; i++) {
 
-        index->titles[i].object_type = bs_read(bs, 2);
+        index->titles[i].object_type = (indx_object_type)bs_read(bs, 2);
         index->titles[i].access_type = bs_read(bs, 2);
         bs_skip(bs, 28);
 
@@ -115,8 +115,8 @@ static int _parse_app_info(BITSTREAM *bs, INDX_APP_INFO *app_info)
     app_info->content_exist_flag             = bs_read(bs, 1);
     bs_skip(bs, 5);
 
-    app_info->video_format = bs_read(bs, 4);
-    app_info->frame_rate   = bs_read(bs, 4);
+    app_info->video_format = (indx_video_format)bs_read(bs, 4);
+    app_info->frame_rate   = (indx_frame_rate)bs_read(bs, 4);
 
     bs_read_bytes(bs, app_info->user_data, 32);
 
