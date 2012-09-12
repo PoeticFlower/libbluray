@@ -20,9 +20,9 @@
 #ifndef BD_OVERLAY_H_
 #define BD_OVERLAY_H_
 
-#ifdef __cplusplus
+/* #ifdef __cplusplus
 extern "C" {
-#endif
+#endif */
 
 #include <stdint.h>
 
@@ -203,8 +203,8 @@ typedef struct bd_argb_buffer_s {
 
 } BD_ARGB_BUFFER;
 
-#ifdef __cplusplus
+/*#ifdef __cplusplus
 }
-#endif
+#endif*/
 
 #endif // BD_OVERLAY_H_
