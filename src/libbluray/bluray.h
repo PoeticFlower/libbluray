@@ -32,6 +32,7 @@ extern "C" {
  */
 
 #include <stdint.h>
+#include "bdnav/clpi_data.h"
 
 #define TITLES_ALL              0    /**< all titles. */
 #define TITLES_FILTER_DUP_TITLE 0x01 /**< remove duplicate titles. */
@@ -867,7 +868,6 @@ const struct meta_dl *bd_get_meta(BLURAY *bd);
 
 /* access to internal information */
 
-struct clpi_cl;
 /**
  *
  *  Get copy of clip information for requested playitem.
