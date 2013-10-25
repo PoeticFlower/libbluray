@@ -598,7 +598,6 @@ static int _read_block(BLURAY *bd, BD_STREAM *st, uint8_t *buf)
                         BD_DEBUG(DBG_BLURAY | DBG_CRIT,
                                  "TP header copy permission indicator != 0, unit is still encrypted?\n");
                         _queue_event(bd, BD_EVENT_ENCRYPTED, 0);
-                        return -1;
                     }
                 }
 
