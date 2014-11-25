@@ -39,6 +39,7 @@
 #define CLPI_SIG1  ('H' << 24 | 'D' << 16 | 'M' << 8 | 'V')
 #define CLPI_SIG2A ('0' << 24 | '2' << 16 | '0' << 8 | '0')
 #define CLPI_SIG2B ('0' << 24 | '1' << 16 | '0' << 8 | '0')
+#define CLPI_SIG2C ('0' << 24 | '2' << 16 | '4' << 8 | '0')
 
 static void
 _human_readable_sig(char *sig, uint32_t s1, uint32_t s2)
@@ -134,7 +135,8 @@ _parse_header(BITSTREAM *bits, CLPI_CL *cl)
     cl->type_indicator2 = bs_read(bits, 32);
     if (cl->type_indicator != CLPI_SIG1 || 
         (cl->type_indicator2 != CLPI_SIG2A &&
-         cl->type_indicator2 != CLPI_SIG2B)) {
+         cl->type_indicator2 != CLPI_SIG2B &&
+         cl->type_indicator2 != CLPI_SIG2C)) {
 
         char sig[9];
         char expect[9];

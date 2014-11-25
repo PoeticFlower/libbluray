@@ -39,6 +39,7 @@
 #define MPLS_SIG1  ('M' << 24 | 'P' << 16 | 'L' << 8 | 'S')
 #define MPLS_SIG2A ('0' << 24 | '2' << 16 | '0' << 8 | '0')
 #define MPLS_SIG2B ('0' << 24 | '1' << 16 | '0' << 8 | '0')
+#define MPLS_SIG2C ('0' << 24 | '2' << 16 | '4' << 8 | '0')
 
 static void
 _human_readable_sig(char *sig, uint32_t s1, uint32_t s2)
@@ -157,7 +158,8 @@ _parse_header(BITSTREAM *bits, MPLS_PL *pl)
     pl->type_indicator2 = bs_read(bits, 32);
     if (pl->type_indicator != MPLS_SIG1 || 
         (pl->type_indicator2 != MPLS_SIG2A && 
-         pl->type_indicator2 != MPLS_SIG2B)) {
+         pl->type_indicator2 != MPLS_SIG2B &&
+         pl->type_indicator2 != MPLS_SIG2C)) {
 
         char sig[9];
         char expect[9];
