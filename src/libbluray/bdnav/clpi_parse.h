@@ -20,6 +20,10 @@
 #if !defined(_CLPI_PARSE_H_)
 #define _CLPI_PARSE_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "clpi_data.h"
 #include "util/attributes.h"
 
@@ -33,5 +37,9 @@ BD_PRIVATE CLPI_CL* clpi_parse(const char *path) BD_ATTR_MALLOC;
 BD_PRIVATE CLPI_CL* clpi_get(struct bd_disc *disc, const char *file);
 BD_PRIVATE CLPI_CL* clpi_copy(const CLPI_CL* src_cl);
 BD_PRIVATE void clpi_free(CLPI_CL *cl);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _CLPI_PARSE_H_
