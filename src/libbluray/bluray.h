@@ -223,6 +223,7 @@ typedef struct bd_stream_info {
 } BLURAY_STREAM_INFO;
 
 typedef struct bd_clip {
+    uint32_t           idx;
     uint32_t           pkt_count;
     uint8_t            still_mode;
     uint16_t           still_time;  /* seconds */
