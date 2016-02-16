@@ -1112,6 +1112,16 @@ int bd_read_file(BLURAY *, const char *path, void **data, int64_t *size);
  */
 int bd_get_clip_infos(BLURAY *bd, unsigned clip, uint64_t *clip_start_time, uint64_t *stream_start_time, uint64_t *pos, uint64_t *duration);
 
+/**
+ * Get the MPLS struct of the current title
+ *
+ * @param bd BLURAY object
+ * @return the MPLS struct
+ *
+ * Lifetime of the MPLS pointer is limited to the lifetime of the BD title
+ */
+struct mpls_pl* bd_get_title_mpls(BLURAY * bd);
+
 #ifdef __cplusplus
 }
 #endif
