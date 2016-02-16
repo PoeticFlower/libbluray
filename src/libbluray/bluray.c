@@ -3795,3 +3795,11 @@ int bd_get_clip_infos(BLURAY *bd, unsigned clip, uint64_t *clip_start_time, uint
     }
     return 0;
 }
+
+struct mpls_pl* bd_get_title_mpls(BLURAY * bd)
+{
+  if (bd && bd->title) {
+    return bd->title->pl;
+  }
+  return NULL;
+}
