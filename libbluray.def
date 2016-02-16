@@ -55,6 +55,7 @@ EXPORTS
                 bd_read_mobj
                 bd_free_mobj
                 bd_get_clip_infos
+                bd_get_title_mpls
 
                 ; additional functions
                 bd_set_debug_handler
