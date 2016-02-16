@@ -2659,6 +2659,8 @@ static BLURAY_TITLE_INFO* _fill_title_info(NAV_TITLE* title, uint32_t title_idx,
         _copy_streams(nc, ci->sec_audio_streams, pi->stn.secondary_audio, ci->sec_audio_stream_count);
     }
 
+    title_info->mvc_base_view_r_flag = title->pl->app_info.mvc_base_view_r_flag;
+
     return title_info;
 }
 

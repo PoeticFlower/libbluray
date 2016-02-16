@@ -270,6 +270,8 @@ typedef struct bd_title_info {
 
     uint32_t             mark_count;
     BLURAY_TITLE_MARK    *marks;
+
+    uint8_t              mvc_base_view_r_flag;
 } BLURAY_TITLE_INFO;
 
 /*
