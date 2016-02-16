@@ -2691,6 +2691,7 @@ static BLURAY_TITLE_INFO* _fill_title_info(NAV_TITLE* title, uint32_t title_idx,
             BLURAY_CLIP_INFO *ci = &title_info->clips[ii];
             NAV_CLIP *nc = &title->clip_list.clip[ii];
 
+            ci->idx = nc->clip_id;
             ci->pkt_count = nc->end_pkt - nc->start_pkt;
             ci->start_time = (uint64_t)nc->title_time * 2;
             ci->in_time = (uint64_t)pi->in_time * 2;
