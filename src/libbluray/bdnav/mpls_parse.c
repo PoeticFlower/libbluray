@@ -266,6 +266,7 @@ _parse_stream(BITSTREAM *bits, MPLS_STREAM *s)
             break;
     };
     s->lang[3] = '\0';
+    s->ss_offset_sequence_id = 0xFF;
 
     if (bs_seek_byte(bits, pos + len) < 0) {
         return 0;
@@ -955,6 +956,99 @@ _parse_subpath_extension(BITSTREAM *bits, MPLS_PL *pl)
 }
 
 static int
+_parse_stn_ss_extension(BITSTREAM *bits, MPLS_PL *pl)
+{
+    int ii, s;
+    int64_t pos;
+
+    for (ii = 0; ii < pl->list_count; ii++) {
+        uint32_t len = bs_read(bits, 16);
+        pos = bs_pos(bits) >> 3;
+        int Fixed_offset_during_PopUp_flag = bs_read(bits, 1);
+        bs_skip(bits, 15); // reserved
+
+        for (s = 0; s < pl->play_item[ii].stn.num_video; s++) {
+            // stream_entry
+            uint32_t slen = bs_read(bits, 8);
+            bs_skip(bits, slen * 8);
+
+            // stream_attributes_ss
+            slen = bs_read(bits, 8);
+            bs_skip(bits, slen * 8);
+
+            bs_skip(bits, 10); // reserved
+            bs_skip(bits, 6);  // number_of_offset_sequences
+        }
+
+        for (s = 0; s < pl->play_item[ii].stn.num_pg; s++) {
+            pl->play_item[ii].stn.pg[s].ss_offset_sequence_id = bs_read(bits, 8);
+
+            bs_skip(bits, 4); // reserved
+            bs_skip(bits, 1); // dialog_region_offset_valid_flag
+            int is_SS_PG = bs_read(bits, 1);
+            int is_top_AS_PG_textST = bs_read(bits, 1);
+            int is_bottom_AS_PG_textST = bs_read(bits, 1);
+            if (is_SS_PG) {
+                // stream_entry left eye
+                uint32_t slen = bs_read(bits, 8);
+                bs_skip(bits, slen * 8);
+
+                // stream_entry right eye
+                slen = bs_read(bits, 8);
+                bs_skip(bits, slen * 8);
+
+                bs_skip(bits, 8); // reserved
+                bs_skip(bits, 8); // PG offset
+            }
+            if (is_top_AS_PG_textST) {
+                // stream_entry
+                uint32_t slen = bs_read(bits, 8);
+                bs_skip(bits, slen * 8);
+
+                bs_skip(bits, 8); // reserved
+                bs_skip(bits, 8); // PG offset
+            }
+            if (is_bottom_AS_PG_textST) {
+                // stream_entry
+                uint32_t slen = bs_read(bits, 8);
+                bs_skip(bits, slen * 8);
+
+                bs_skip(bits, 8); // reserved
+                bs_skip(bits, 8); // PG offset
+            }
+        }
+
+        for (s = 0; s < pl->play_item[ii].stn.num_ig; s++) {
+            if (Fixed_offset_during_PopUp_flag)
+              bs_skip(bits, 8);
+            else
+              pl->play_item[ii].stn.ig[s].ss_offset_sequence_id = bs_read(bits, 8);
+
+            bs_skip(bits, 16); // IG_Plane_offset_during_BB_video
+            bs_skip(bits, 7); // reserved
+            int is_SS_IG = bs_read(bits, 1);
+            if (is_SS_IG) {
+                // stream_entry left eye
+                uint32_t slen = bs_read(bits, 8);
+                bs_skip(bits, slen * 8);
+
+                // stream_entry right eye
+                slen = bs_read(bits, 8);
+                bs_skip(bits, slen * 8);
+
+                bs_skip(bits, 8); // reserved
+                bs_skip(bits, 8); // PG offset
+            }
+        }
+
+        // Skip to next play item
+        bs_seek_byte(bits, pos + len);
+    }
+
+    return 0;
+}
+
+static int
 _parse_mpls_extension(BITSTREAM *bits, int id1, int id2, void *handle)
 {
     MPLS_PL *pl = (MPLS_PL*)handle;
@@ -968,7 +1062,7 @@ _parse_mpls_extension(BITSTREAM *bits, int id1, int id2, void *handle)
 
     if (id1 == 2) {
         if (id2 == 1) {
-            return 0;
+            return _parse_stn_ss_extension(bits, pl);
         }
         if (id2 == 2) {
             // SubPath entries extension
