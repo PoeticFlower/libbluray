@@ -49,6 +49,7 @@ typedef struct
     uint8_t         sv_num_pip_pg_ref;
     uint8_t        *sv_secondary_audio_ref;
     uint8_t        *sv_pip_pg_ref;
+    uint8_t         ss_offset_sequence_id;
 } MPLS_STREAM;
 
 typedef struct
